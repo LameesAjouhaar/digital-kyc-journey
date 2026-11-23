@@ -10,6 +10,7 @@ const initialState: KycWorkflowState = {
   currentStep: 'idle',
   previousStep: null,
   errorMessage: null,
+  sessionId: null,
 };
 
 const allowedTransitions: Record<KycStep, KycStep[]> = {
@@ -53,13 +54,30 @@ const kycWorkflowSlice = createSlice({
     },
 
     resetWorkflow: () => initialState,
+
+sessionCreated: (state, action: PayloadAction<string>) => {
+   if (state.currentStep !== 'idle' && state.currentStep !== 'error') {
+    return;
+  }
+
+  state.sessionId = action.payload;
+  state.previousStep = state.currentStep;
+  state.currentStep = 'device-selection';
+  state.errorMessage = null;
+
+    },
+
   },
+  
 });
+
+
 
 export const {
   transitionTo,
   setWorkflowError,
   resetWorkflow,
+  sessionCreated,
 } = kycWorkflowSlice.actions;
 
 export default kycWorkflowSlice.reducer;

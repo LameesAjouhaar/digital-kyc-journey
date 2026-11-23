@@ -16,4 +16,5 @@ export interface KycWorkflowState {
   currentStep: KycStep;
   previousStep: KycStep | null;
   errorMessage: string | null;
+  sessionId: string | null;
 }

@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import reducer, {
   resetWorkflow,
   setWorkflowError,
+  sessionCreated,
   transitionTo,
 } from '@/store/slices/kycWorkflowSlice';
 
@@ -14,6 +15,7 @@ describe('kycWorkflowSlice', () => {
     expect(state.currentStep).toBe('idle');
     expect(state.previousStep).toBeNull();
     expect(state.errorMessage).toBeNull();
+    expect(state.sessionId).toBeNull();
   });
 
   it('allows a valid workflow transition', () => {
@@ -63,5 +65,39 @@ describe('kycWorkflowSlice', () => {
     expect(resetState.currentStep).toBe('idle');
     expect(resetState.previousStep).toBeNull();
     expect(resetState.errorMessage).toBeNull();
+    expect(resetState.sessionId).toBeNull();
   });
+
+  it('stores the session ID and advances to device selection', () => {
+  const state = reducer(undefined, sessionCreated('session-123'));
+
+  expect(state.sessionId).toBe('session-123');
+  expect(state.currentStep).toBe('device-selection');
+  expect(state.previousStep).toBe('idle');
+});
+
+it('does not create a session outside the idle state', () => {
+  const initialState = reducer(
+    undefined,
+    transitionTo('device-selection'),
+  );
+
+  const state = reducer(initialState, sessionCreated('session-123'));
+
+  expect(state.sessionId).toBeNull();
+  expect(state.currentStep).toBe('device-selection');
+});
+
+it('allows a new session after a previous session creation failure', () => {
+  const errorState = reducer(
+    undefined,
+    setWorkflowError('Unable to start verification'),
+  );
+
+  const state = reducer(errorState, sessionCreated('session-456'));
+
+  expect(state.sessionId).toBe('session-456');
+  expect(state.currentStep).toBe('device-selection');
+  expect(state.errorMessage).toBeNull();
+});
 });
