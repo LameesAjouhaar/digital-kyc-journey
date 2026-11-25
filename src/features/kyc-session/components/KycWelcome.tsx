@@ -52,11 +52,14 @@ export function KycWelcome() {
                 type="button"
                 onClick={handleStartVerification}
                 disabled={createSession.isPending}
+                aria-busy={createSession.isPending}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {createSession.isPending
-                  ? 'Starting verification...'
-                  : 'Start verification'}
+                <span aria-live="polite">
+                  {createSession.isPending
+                    ? 'Starting verification...'
+                    : 'Start verification'}
+                </span>
 
                 {!createSession.isPending && (
                   <ArrowRight size={18} aria-hidden="true" />

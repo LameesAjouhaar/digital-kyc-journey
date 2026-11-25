@@ -11,6 +11,7 @@ export function KycRequirements() {
   return (
     <section
       aria-labelledby="requirements-heading"
+      aria-describedby="requirements-description"
       className="rounded-2xl border border-slate-200 bg-white p-6"
     >
       <div className="mb-5 flex items-center gap-3">
@@ -25,7 +26,11 @@ export function KycRequirements() {
           >
             What you will need
           </h2>
-          <p className="text-sm text-slate-500">
+
+          <p
+            id="requirements-description"
+            className="text-sm text-slate-500"
+          >
             Have these ready before you begin.
           </p>
         </div>
@@ -39,6 +44,7 @@ export function KycRequirements() {
               className="mt-0.5 shrink-0 text-emerald-600"
               aria-hidden="true"
             />
+
             <span className="text-sm leading-6 text-slate-700">
               {requirement}
             </span>
@@ -47,7 +53,10 @@ export function KycRequirements() {
       </ul>
 
       <div className="mt-6 grid grid-cols-2 gap-3 border-t border-slate-100 pt-5">
-        <div className="flex items-center gap-2 text-sm text-slate-600">
+        <div
+          className="flex items-center gap-2 text-sm text-slate-600"
+          aria-label="Estimated completion time: about 5 minutes"
+        >
           <Clock size={17} aria-hidden="true" />
           <span>About 5 minutes</span>
         </div>
